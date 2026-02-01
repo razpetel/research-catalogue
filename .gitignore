@@ -2,6 +2,9 @@
 .env
 .env.local
 
+# MCP settings with API keys
+.claude/settings.local.json
+
 # Research cache
 .claude/research-cache/
 

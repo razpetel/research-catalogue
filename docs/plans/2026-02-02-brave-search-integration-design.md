@@ -115,18 +115,20 @@
 
 ## Brave Search Configuration
 
-### MCP Server (already configured)
+### MCP Server
 ```json
 {
   "brave-search": {
     "command": "npx",
-    "args": ["-y", "@anthropic-ai/mcp-server-brave-search", "--transport", "stdio"],
+    "args": ["-y", "@brave/brave-search-mcp-server"],
     "env": {
-      "BRAVE_API_KEY": "..."
+      "BRAVE_API_KEY": "YOUR_BRAVE_API_KEY_HERE"
     }
   }
 }
 ```
+
+**Note:** `settings.local.json` is gitignored. Copy from `.claude/settings.local.json.example`.
 
 ### Tools Used
 - `brave_web_search` - Reddit, Twitter, general web
