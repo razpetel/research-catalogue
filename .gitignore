@@ -1,0 +1,22 @@
+# Environment
+.env
+.env.local
+
+# Research cache
+.claude/research-cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Node
+node_modules/
+
+# Logs
+*.log
