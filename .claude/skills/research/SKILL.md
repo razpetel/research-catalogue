@@ -90,7 +90,7 @@ Sequential multi-source research with full MCP access.
 4. Write full report to `research/catalogue/YYYY-MM-DD-<slug>.md`
    - If updating: Overwrite existing file, preserve useful historical context
 5. Update `research/catalogue.md` (columns: Date | Topic | Summary | Sentiment | Report):
-   - If new: Append row with 1-sentence summary
+   - If new: Append row with 2-3 sentence summary (what it is, key finding, recommendation)
    - If update: Update existing row's date, summary, and sentiment
 
 ## Common Mistakes
