@@ -1,166 +1,101 @@
 ---
 name: research
-description: Use when user provides a lead (URL, image, or topic) to research comprehensively across GitHub, Reddit, Twitter, LinkedIn, and web sources
+description: Use when given a topic, URL, or image to investigate across GitHub, Reddit, Twitter, LinkedIn, and web
 ---
 
 # Research Agent
 
-Comprehensive multi-source research with parallel subagents.
+Sequential multi-source research with full MCP access.
+
+## When to Use
+
+**Use for:** Products, tools, libraries, companies, technologies needing comprehensive analysis
+
+**Skip for:** Simple facts, definitions, quick lookups — answer directly
+
+## Quick Reference
+
+| Step | Tools | Output |
+|------|-------|--------|
+| Setup | Parse input, generate session ID | `.claude/research-cache/<session>/` |
+| GitHub | GitHub MCP | `github-findings.md` |
+| Reddit | WebSearch → Brave (`site:reddit.com`, `freshness: py`) | `reddit-findings.md` |
+| Twitter | WebSearch → Brave (`site:x.com`, `freshness: pm`) | `twitter-findings.md` |
+| LinkedIn | WebSearch (`allowed_domains: ["linkedin.com"]`) | `linkedin-findings.md` |
+| Web | WebSearch → Brave news → Context7 | `web-findings.md` |
+| Synthesis | Read all findings → Generate report | `research/catalogue/YYYY-MM-DD-<slug>.md` |
 
 ## Workflow
 
-### 1. Parse Input
-- **URL**: Extract topic from page title, path, or domain
-- **Image path**: Use Read tool to view image, analyze content, extract subject
-- **Text**: Use directly as topic
+### 1. Setup
 
-### 2. Generate Slug
-```
-lowercase → replace [^a-z0-9] with "-" → collapse "--" → trim → max 50 chars
-```
+1. Parse input: URL → extract domain/path | Image → Read + extract subject | Text → use directly
+2. Generate slug: `lowercase → replace [^a-z0-9] with "-" → collapse → trim 50 chars`
+3. Generate session ID: `YYYYMMDD-HHMMSS-<slug>`
+4. Create: `.claude/research-cache/<session_id>/`
+5. Display: `Researching **<topic>**...`
 
-Examples:
-- "Cursor IDE" → "cursor-ide"
-- "https://linear.app" → "linear"
+### 2. GitHub Research
 
-### 3. Check Existing Entry
-```
-Glob research/catalogue/*.md
-For each: read frontmatter topic:, slugify, compare
-Match if slugs equal OR one contains the other
-If match: set existing_context with date and "focus on NEW info"
-```
+**Tools:** GitHub MCP (`search_repositories`, `get_file_contents`, `list_issues`)
 
-### 4. Generate Session ID
-Format: `YYYYMMDD-HHMMSS-<slug>`
-Create: `.claude/research-cache/<session_id>/`
+1. Search for topic, find primary repo
+2. Examine README, issues, PRs, releases
+3. Assess: active/stale/abandoned
+4. Write to `github-findings.md` (see templates.md)
 
-### 5. Write Plan
-Write to `.claude/research-cache/<session_id>/plan.md`:
-```markdown
-## Research Plan: <topic>
-- Input type: [URL/Image/Topic]
-- Existing entry: [Yes - path / No]
-- Subagents: [github, reddit, twitter, linkedin, web]
-```
+### 3. Reddit Research
 
-### 6. Progress Output
-Display: `🔍 Researching **<topic>** across 5 sources...`
+**Tools:** WebSearch → Brave MCP → agent-browser (if needed)
 
-### 7. Dispatch Subagents
-For each source [github, reddit, twitter, linkedin, web]:
-1. Read `.claude/prompts/<source>-subagent.md`
-2. Replace `{{topic}}`, `{{session_id}}`, `{{existing_context}}`
-3. Dispatch: `Task(prompt=interpolated, model="opus")`
+1. WebSearch `{topic}` to find themes
+2. Brave `brave_web_search`: `site:reddit.com {topic}`, `freshness: py`, `count: 20`
+3. If high-engagement thread: agent-browser for comments
+4. Write to `reddit-findings.md`
 
-Dispatch all 5 in parallel (single message, 5 Task calls).
+### 4. Twitter Research
 
-### 8. Check Success Threshold
-- Count subagents with non-empty findings
-- If < 3 succeeded:
-  ```
-  ⚠️ Only N/5 sources returned data.
-  Failed: [list]
-  Continue with limited data? (yes/no)
-  ```
-- If >= 3: proceed
+**Tools:** WebSearch → Brave MCP
 
-### 9. Evaluate Completeness
-Check 8 dimensions have data:
-1. Overview 2. Technical 3. Trends 4. Key Innovation
-5. Competitive Landscape 6. Usefulness 7. Pros/Cons 8. Sentiment
+1. WebSearch `{topic}` to find influencers, buzz
+2. Brave `brave_web_search`: `site:x.com OR site:twitter.com {topic}`, `freshness: pm`, `count: 20`
+3. Write to `twitter-findings.md`
 
-If critical gaps AND retries < 2: dispatch targeted follow-up subagent.
+### 5. LinkedIn Research
 
-### 10. Synthesize
-Combine all findings into unified report.
-If updating existing: apply merge strategy (replace sentiment/trends, merge others).
+**Tools:** WebSearch only
 
-### 11. Citation Verification
-```
-Read .claude/prompts/citation-agent.md
-Replace {{topic}}, {{session_id}}
-Task(prompt=interpolated, model="sonnet")
-```
+1. WebSearch with `allowed_domains: ["linkedin.com"]`
+2. Note: Login walls limit depth — capture what's visible
+3. Write to `linkedin-findings.md`
 
-### 12. Generate Outputs
+### 6. Web Research
 
-**Key Insights** (display immediately):
-```markdown
-## Key Insights: <topic>
+**Tools:** WebSearch → Brave news → Context7 → agent-browser (if needed)
 
-**What it is:** [one sentence]
-**What's novel:** [key innovation]
-**How it compares:** [competitive position]
-**Bottom line:** [assessment]
+1. WebSearch `{topic} review OR comparison`
+2. Brave `brave_news_search`, `freshness: pm`, `count: 20`
+3. Context7: `resolve-library-id` → `get-library-docs` (if applicable)
+4. agent-browser for pricing pages, comparison tables (if needed)
+5. Write to `web-findings.md`
 
-📄 Full report: research/catalogue/YYYY-MM-DD-<slug>.md
-```
+### 7. Synthesis
 
-**Full Report**:
-- If new: Write to `research/catalogue/YYYY-MM-DD-<slug>.md`
-- If update: Edit existing file, update `updated:` frontmatter
+1. Read all 5 findings files
+2. Identify themes across sources
+3. Display Key Insights immediately (see templates.md)
+4. Write full report to `research/catalogue/YYYY-MM-DD-<slug>.md`
+5. Append row to `research/catalogue.md`
 
-**Index Update**:
-- If new: Append row to `research/catalogue.md`
-- If update: Edit existing row, update date
+## Common Mistakes
 
-## Report Template
+| Mistake | Fix |
+|---------|-----|
+| Skipping GitHub for non-code topics | Always check — many products have repos |
+| Deep-diving one source | Balance across all 5 |
+| Missing Context7 for libraries | Always try `resolve-library-id` |
+| Forgetting freshness params | Reddit: `py` (year), Twitter: `pm` (month) |
 
-```markdown
----
-topic: <topic>
-slug: <slug>
-date: YYYY-MM-DD
-updated: YYYY-MM-DD
-sources: [github, reddit, twitter, linkedin, web]
----
+## Output Formats
 
-# <Topic> Research Report
-
-## Overview
-[2-3 paragraphs]
-
-## Technical Analysis
-[From GitHub + Web]
-
-## Key Innovation
-[What's different]
-
-## Trends
-[Adoption trajectory]
-
-## Competitive Landscape
-| Competitor | Differentiation |
-|------------|-----------------|
-
-## Usefulness Assessment
-**Best for:** [list]
-**Not ideal for:** [list]
-
-## Pros and Cons
-| Pros | Cons |
-|------|------|
-
-## User Sentiment
-**Overall:** [Positive/Mixed/Negative]
-**Reddit:** [summary]
-**Twitter:** [summary]
-**LinkedIn:** [summary]
-
-## Sources
-[Full list with URLs]
-
----
-*Generated by Research Agent on YYYY-MM-DD*
-```
-
-## Dimensions
-1. Overview
-2. Technical
-3. Trends
-4. Key Innovation
-5. Competitive Landscape
-6. Usefulness
-7. Pros and Cons
-8. User Sentiment (recency-weighted)
+See `templates.md` in this directory for all output formats.
