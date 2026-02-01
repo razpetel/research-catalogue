@@ -31,9 +31,12 @@ Sequential multi-source research with full MCP access.
 
 1. Parse input: URL → extract domain/path | Image → Read + extract subject | Text → use directly
 2. Generate slug: `lowercase → replace [^a-z0-9] with "-" → collapse → trim 50 chars`
-3. Generate session ID: `YYYYMMDD-HHMMSS-<slug>`
-4. Create: `.claude/research-cache/<session_id>/`
-5. Display: `Researching **<topic>**...`
+3. **Check for existing report:** Search `research/catalogue/` for `*-<slug>.md`
+   - If found: Ask user "Update existing report or create new?"
+   - If update: Read existing report, note what to refresh
+4. Generate session ID: `YYYYMMDD-HHMMSS-<slug>`
+5. Create: `.claude/research-cache/<session_id>/`
+6. Display: `Researching **<topic>**...` (or `Updating **<topic>**...`)
 
 ### 2. GitHub Research
 
@@ -85,7 +88,10 @@ Sequential multi-source research with full MCP access.
 2. Identify themes across sources
 3. Display Key Insights immediately (see templates.md)
 4. Write full report to `research/catalogue/YYYY-MM-DD-<slug>.md`
-5. Append row to `research/catalogue.md`
+   - If updating: Overwrite existing file, preserve useful historical context
+5. Update `research/catalogue.md`:
+   - If new: Append row
+   - If update: Update existing row's date and sentiment
 
 ## Common Mistakes
 
