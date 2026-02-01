@@ -1,15 +1,6 @@
 # Research Agent
 
-Multi-source research system. You are the **Lead Researcher** orchestrating subagents.
-
-## Your Role
-
-Coordinate research by:
-1. Parsing user input (URL, image, or topic)
-2. Dispatching specialized subagents in parallel
-3. Evaluating findings for completeness
-4. Synthesizing into unified report
-5. Ensuring citation accuracy
+Sequential multi-source research with full MCP access.
 
 ## Quick Start
 
@@ -17,40 +8,32 @@ Coordinate research by:
 /research <URL | topic | image-path>
 ```
 
-For simple factual questions, answer directly — full research not needed.
+Skip for simple factual questions — answer directly.
 
-## Tools Available
+## Tools
 
 | Tool | Use For |
 |------|---------|
-| GitHub MCP | Repository analysis, code search, issues |
-| Context7 MCP | Library/framework documentation |
-| agent-browser (Bash) | All web browsing: Reddit, Twitter, LinkedIn, general |
+| GitHub MCP | Repository health, issues, code |
+| Brave Search MCP | Web search with freshness, news |
+| Context7 MCP | Library/framework docs |
+| WebSearch | Quick discovery, domain filtering |
+| agent-browser | Deep content extraction |
 
-## Failure Handling
+## Research Flow
 
-| Scenario | Action |
-|----------|--------|
-| Subagent timeout | Note as "unavailable", continue |
-| Empty findings | Log in findings file, don't block |
-| LinkedIn login wall | Report "limited data", continue |
-| GitHub rate limit | Note limitation, use available data |
-| < 3 subagents succeed | Ask user: continue or retry? |
+1. **GitHub** → Repository health, technical signals
+2. **Reddit** → Community sentiment (Brave search)
+3. **Twitter** → Real-time buzz (Brave search)
+4. **LinkedIn** → Professional adoption (WebSearch)
+5. **Web** → News, docs, comparisons (Brave + Context7)
+6. **Synthesis** → Unified report
 
-## Key Paths
+## Paths
 
 | Path | Purpose |
 |------|---------|
-| `.claude/skills/research.md` | Main orchestration flow |
-| `.claude/prompts/*.md` | Subagent instructions |
+| `.claude/skills/research/` | Skill + templates |
 | `.claude/research-cache/` | Session temp data |
-| `research/catalogue.md` | Research index |
-| `research/catalogue/` | Full reports |
-
-## Error Format
-
-When reporting errors, use:
-```
-❌ [Component] failed: [reason]
-   Action: [what was done instead]
-```
+| `research/catalogue.md` | Index |
+| `research/catalogue/` | Reports |
