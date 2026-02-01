@@ -12,6 +12,8 @@
 
 ## Architecture
 
+**Key change:** No parallel subagents. Lead Researcher does everything sequentially with full MCP access.
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                     /research <input>                           │
@@ -19,59 +21,67 @@
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    LEAD RESEARCHER (Opus)                       │
-│  Parse input → Generate session → Dispatch 5 subagents          │
+│                    LEAD RESEARCHER (Main Session)               │
+│                                                                 │
+│  Has MCP access: GitHub MCP, Brave Search MCP, Context7 MCP    │
+│  Has built-in: WebSearch, WebFetch, agent-browser (via Bash)   │
+│                                                                 │
+│  Sequential workflow:                                           │
+│  1. Parse input, generate session ID                           │
+│  2. GitHub research (GitHub MCP)                               │
+│  3. Reddit research (WebSearch → Brave MCP → agent-browser)    │
+│  4. Twitter research (WebSearch → Brave MCP)                   │
+│  5. LinkedIn research (WebSearch)                              │
+│  6. Web research (WebSearch → Brave news → Context7)           │
+│  7. Synthesize findings into report                            │
 └─────────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────┬──────────┬┴──────────┬──────────┐
-        ▼         ▼          ▼           ▼          ▼
-   ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐
-   │ GitHub │ │ Reddit │ │Twitter │ │LinkedIn│ │  Web   │
-   │        │ │        │ │        │ │        │ │        │
-   │GitHub  │ │WebSearch│ │WebSearch│ │WebSearch│ │WebSearch│
-   │MCP     │ │   ↓    │ │   ↓    │ │        │ │   ↓    │
-   │        │ │Brave   │ │Brave   │ │        │ │Brave   │
-   │        │ │   ↓    │ │        │ │        │ │News    │
-   │        │ │agent-  │ │        │ │        │ │   ↓    │
-   │        │ │browser │ │        │ │        │ │agent-  │
-   │        │ │(threads)│ │        │ │        │ │browser │
-   │        │ │        │ │        │ │        │ │Context7│
-   └────────┘ └────────┘ └────────┘ └────────┘ └────────┘
 ```
+
+**Why no subagents?**
+- Task tool subagents cannot access MCP tools (documented limitation)
+- Sequential execution with MCP is better than parallel without MCP
+- Simpler architecture, easier to debug
 
 ---
 
-## Tool Strategy Per Subagent
+## Tool Strategy (Sequential Steps)
 
-### GitHub Subagent
-- **Tools:** GitHub MCP only
-- **No change** from current design
+All steps run in the main session with full MCP access.
 
-### Reddit Subagent
-- **Stage 1 (Discovery):** WebSearch with `{topic}` to find themes, terminology, controversies
-- **Stage 2 (Deep Search):** Brave `brave_web_search` with:
+### Step 1: GitHub Research
+- **Tool:** GitHub MCP (`search_repositories`, `get_file_contents`, `list_issues`)
+- **Output:** `.claude/research-cache/{session}/github-findings.md`
+
+### Step 2: Reddit Research
+- **Stage 1 (Discovery):** WebSearch `{topic}` to find themes
+- **Stage 2 (Deep Search):** Brave `brave_web_search`:
   - Query: `site:reddit.com {topic} {theme}`
-  - Parameters: `freshness: py` (past year), `count: 20`
-  - Run 2-3 targeted queries based on Stage 1 findings
-- **Stage 3 (Deep Content):** agent-browser for high-engagement threads (20+ comments)
+  - Parameters: `freshness: py`, `count: 20`
+- **Stage 3 (Deep Content):** agent-browser for high-engagement threads
+- **Output:** `.claude/research-cache/{session}/reddit-findings.md`
 
-### Twitter Subagent
-- **Stage 1 (Discovery):** WebSearch with `{topic}` to find themes, influencers, buzz
-- **Stage 2 (Deep Search):** Brave `brave_web_search` with:
-  - Query: `site:x.com OR site:twitter.com {topic} {theme}`
-  - Parameters: `freshness: pm` (past month), `count: 20`
-  - Run 2-3 targeted queries based on Stage 1 findings
-- **No agent-browser** - paywall blocks it, snippets sufficient
+### Step 3: Twitter Research
+- **Stage 1 (Discovery):** WebSearch `{topic}` to find themes
+- **Stage 2 (Deep Search):** Brave `brave_web_search`:
+  - Query: `site:x.com OR site:twitter.com {topic}`
+  - Parameters: `freshness: pm`, `count: 20`
+- **Output:** `.claude/research-cache/{session}/twitter-findings.md`
 
-### LinkedIn Subagent
-- **Tools:** WebSearch only with `allowed_domains: ["linkedin.com"]`
-- **No Brave, no agent-browser** - login wall blocks deep access, snippets sufficient
+### Step 4: LinkedIn Research
+- **Tool:** WebSearch with `allowed_domains: ["linkedin.com"]`
+- **Output:** `.claude/research-cache/{session}/linkedin-findings.md`
 
-### Web Subagent
-- **Stage 1 (Discovery):** WebSearch with `{topic} review OR comparison`
-- **Stage 2 (News):** Brave `brave_news_search` with `freshness: pm`, `count: 20`
-- **Stage 3 (Docs):** Context7 MCP for library/framework documentation
-- **Stage 4 (Deep Content):** agent-browser for technical deep-dives, comparison tables
+### Step 5: Web Research
+- **Stage 1:** WebSearch `{topic} review OR comparison`
+- **Stage 2:** Brave `brave_news_search` with `freshness: pm`
+- **Stage 3:** Context7 MCP for documentation
+- **Stage 4:** agent-browser for deep-dives if needed
+- **Output:** `.claude/research-cache/{session}/web-findings.md`
+
+### Step 6: Synthesis
+- Read all findings files
+- Generate unified report
+- Output Key Insights + full report
 
 ---
 
@@ -152,19 +162,16 @@
 
 ## Files to Update
 
+**Architecture change:** No subagent prompts needed. All logic moves to main skill.
+
 | File | Change |
 |------|--------|
-| `.claude/settings.local.json` | ✅ Done - added `brave-search` MCP |
+| `~/.claude.json` | ✅ Done - MCP servers at user scope (brave-search, github, context7) |
 | `.env` | ✅ Done - added `BRAVE_API_KEY` |
-| `.env.example` | Add `BRAVE_API_KEY` placeholder |
-| `.claude/prompts/reddit-subagent.md` | Rewrite: WebSearch → Brave → agent-browser |
-| `.claude/prompts/twitter-subagent.md` | Rewrite: WebSearch → Brave |
-| `.claude/prompts/linkedin-subagent.md` | Simplify: WebSearch only |
-| `.claude/prompts/web-subagent.md` | Rewrite: WebSearch → Brave news → agent-browser + Context7 |
-| `.claude/prompts/github-subagent.md` | No change |
-| `.claude/prompts/citation-agent.md` | No change |
-| `.claude/skills/research/SKILL.md` | Update tool references |
-| `CLAUDE.md` | Update "Tools Available" table |
+| `.env.example` | ✅ Done - added `BRAVE_API_KEY` placeholder |
+| `.claude/skills/research/SKILL.md` | **Rewrite** - sequential workflow with MCP calls |
+| `.claude/prompts/*.md` | **Delete** - no longer needed (no subagents) |
+| `CLAUDE.md` | Update "Tools Available" table, remove subagent references |
 
 ---
 
