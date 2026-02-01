@@ -160,5 +160,5 @@ sources: [github, reddit, twitter, linkedin, web]
 ## Catalogue Index Row
 
 ```markdown
-| YYYY-MM-DD | Topic | [Sentiment] | [Report](catalogue/YYYY-MM-DD-slug.md) |
+| YYYY-MM-DD | Topic | [1-sentence summary] | [Sentiment] | [Report](catalogue/YYYY-MM-DD-slug.md) |
 ```

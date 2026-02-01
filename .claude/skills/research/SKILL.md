@@ -89,9 +89,9 @@ Sequential multi-source research with full MCP access.
 3. Display Key Insights immediately (see templates.md)
 4. Write full report to `research/catalogue/YYYY-MM-DD-<slug>.md`
    - If updating: Overwrite existing file, preserve useful historical context
-5. Update `research/catalogue.md`:
-   - If new: Append row
-   - If update: Update existing row's date and sentiment
+5. Update `research/catalogue.md` (columns: Date | Topic | Summary | Sentiment | Report):
+   - If new: Append row with 1-sentence summary
+   - If update: Update existing row's date, summary, and sentiment
 
 ## Common Mistakes
 
