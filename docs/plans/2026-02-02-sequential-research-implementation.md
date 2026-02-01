@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Rewrite the research agent to use sequential execution with full MCP access (Brave Search, GitHub, Context7) instead of parallel subagents.
+**Goal:** Rewrite the research agent to use sequential execution with full MCP access, following writing-skills best practices (concise, templates extracted, quick reference).
 
 **Architecture:** Lead Researcher skill runs in main session, calling MCP tools directly in sequence: GitHub → Reddit → Twitter → LinkedIn → Web → Synthesis. No Task tool subagents (they can't access MCP).
 
@@ -50,7 +50,7 @@ Replace entire contents with:
 ```markdown
 # Research Agent
 
-Multi-source research system. Sequential execution with full MCP access.
+Sequential multi-source research with full MCP access.
 
 ## Quick Start
 
@@ -58,53 +58,38 @@ Multi-source research system. Sequential execution with full MCP access.
 /research <URL | topic | image-path>
 ```
 
-For simple factual questions, answer directly — full research not needed.
+Skip for simple factual questions — answer directly.
 
-## Tools Available
+## Tools
 
 | Tool | Use For |
 |------|---------|
-| GitHub MCP | Repository analysis, code search, issues |
-| Brave Search MCP | Web search with freshness control, news search |
-| Context7 MCP | Library/framework documentation |
-| WebSearch (built-in) | Quick discovery, domain-filtered search |
-| agent-browser (Bash) | Deep content extraction when needed |
+| GitHub MCP | Repository health, issues, code |
+| Brave Search MCP | Web search with freshness, news |
+| Context7 MCP | Library/framework docs |
+| WebSearch | Quick discovery, domain filtering |
+| agent-browser | Deep content extraction |
 
 ## Research Flow
 
-Sequential steps (each has full MCP access):
-1. **GitHub** - Repository health, technical signals
-2. **Reddit** - Community sentiment via Brave search
-3. **Twitter** - Real-time buzz via Brave search
-4. **LinkedIn** - Professional adoption via WebSearch
-5. **Web** - News, docs, comparisons via Brave + Context7
-6. **Synthesis** - Unified report generation
+1. **GitHub** → Repository health, technical signals
+2. **Reddit** → Community sentiment (Brave search)
+3. **Twitter** → Real-time buzz (Brave search)
+4. **LinkedIn** → Professional adoption (WebSearch)
+5. **Web** → News, docs, comparisons (Brave + Context7)
+6. **Synthesis** → Unified report
 
-## Key Paths
+## Paths
 
 | Path | Purpose |
 |------|---------|
-| `.claude/skills/research/SKILL.md` | Main research workflow |
+| `.claude/skills/research/` | Skill + templates |
 | `.claude/research-cache/` | Session temp data |
-| `research/catalogue.md` | Research index |
-| `research/catalogue/` | Full reports |
-
-## Error Handling
-
-If a source fails, note it and continue:
-```
-⚠️ [Source] unavailable: [reason]
-   Continuing with remaining sources...
-```
+| `research/catalogue.md` | Index |
+| `research/catalogue/` | Reports |
 ```
 
-**Step 2: Verify file**
-
-```bash
-head -30 CLAUDE.md
-```
-
-**Step 3: Commit**
+**Step 2: Commit**
 
 ```bash
 git add CLAUDE.md
@@ -113,60 +98,19 @@ git commit -m "docs: update CLAUDE.md for sequential architecture"
 
 ---
 
-## Task 3: Rewrite Main Research Skill
+## Task 3: Create Templates Reference
 
 **Files:**
-- Modify: `.claude/skills/research/SKILL.md`
+- Create: `.claude/skills/research/templates.md`
 
-**Step 1: Rewrite skill with sequential workflow**
-
-Replace entire contents with:
+**Step 1: Create templates file**
 
 ```markdown
----
-name: research
-description: Research a topic across GitHub, Reddit, Twitter, LinkedIn, and web sources
----
+# Research Output Templates
 
-# Research Agent
+## Findings Format (per source)
 
-Sequential multi-source research with full MCP access.
-
-## Workflow
-
-### 1. Parse Input & Setup
-
-**Parse input type:**
-- URL → Extract topic from domain/path
-- Image → Read with Read tool, extract subject
-- Text → Use directly as topic
-
-**Generate slug:**
-```
-lowercase → replace [^a-z0-9] with "-" → collapse "--" → trim → max 50 chars
-```
-
-**Generate session ID:** `YYYYMMDD-HHMMSS-<slug>`
-
-**Create cache directory:** `.claude/research-cache/<session_id>/`
-
-**Display progress:** `🔍 Researching **<topic>**...`
-
----
-
-### 2. GitHub Research
-
-**Tools:** GitHub MCP
-
-**Process:**
-1. Search repositories: `search_repositories` for topic
-2. Find primary repo, examine README
-3. Check issues, PRs, release cadence
-4. Assess: active/stale/abandoned
-
-**Write findings to:** `.claude/research-cache/<session_id>/github-findings.md`
-
-**Format:**
+### GitHub Findings
 ```markdown
 ## GitHub Findings
 
@@ -177,33 +121,18 @@ lowercase → replace [^a-z0-9] with "-" → collapse "--" → trim → max 50 c
 - Status: [Active/Stale/Abandoned]
 
 ### Technical Signals
-- Language:
+- Language: [X]
 - CI/CD: [Yes/No]
-- Test coverage: [Yes/No/Unknown]
+- Tests: [Yes/No/Unknown]
 
 ### Red Flags
-- [Any issues or "None"]
+- [Issues or "None"]
 
 ### Sources
 - [URLs]
 ```
 
----
-
-### 3. Reddit Research
-
-**Tools:** WebSearch → Brave MCP → agent-browser (if needed)
-
-**Process:**
-1. **Discovery:** WebSearch for `{topic}` - find themes, terminology
-2. **Deep search:** Brave `brave_web_search`:
-   - Query: `site:reddit.com {topic}`
-   - Params: `freshness: py`, `count: 20`
-3. **Deep content:** If high-engagement thread found, use agent-browser
-
-**Write findings to:** `.claude/research-cache/<session_id>/reddit-findings.md`
-
-**Format:**
+### Reddit Findings
 ```markdown
 ## Reddit Findings
 
@@ -224,21 +153,7 @@ lowercase → replace [^a-z0-9] with "-" → collapse "--" → trim → max 50 c
 - [URLs]
 ```
 
----
-
-### 4. Twitter Research
-
-**Tools:** WebSearch → Brave MCP
-
-**Process:**
-1. **Discovery:** WebSearch for `{topic}` - find influencers, buzz
-2. **Deep search:** Brave `brave_web_search`:
-   - Query: `site:x.com OR site:twitter.com {topic}`
-   - Params: `freshness: pm`, `count: 20`
-
-**Write findings to:** `.claude/research-cache/<session_id>/twitter-findings.md`
-
-**Format:**
+### Twitter Findings
 ```markdown
 ## Twitter Findings
 
@@ -247,7 +162,7 @@ lowercase → replace [^a-z0-9] with "-" → collapse "--" → trim → max 50 c
 - Trend: [Rising/Stable/Declining]
 
 ### Influencer Takes
-- [@handle]: "[quote]" - [Positive/Negative/Neutral]
+- [@handle]: "[quote]" - [Sentiment]
 
 ### General Sentiment
 - [Summary]
@@ -256,19 +171,7 @@ lowercase → replace [^a-z0-9] with "-" → collapse "--" → trim → max 50 c
 - [URLs]
 ```
 
----
-
-### 5. LinkedIn Research
-
-**Tools:** WebSearch only
-
-**Process:**
-1. WebSearch with `allowed_domains: ["linkedin.com"]`
-2. Note: Login walls limit depth - capture what's visible
-
-**Write findings to:** `.claude/research-cache/<session_id>/linkedin-findings.md`
-
-**Format:**
+### LinkedIn Findings
 ```markdown
 ## LinkedIn Findings
 
@@ -277,45 +180,29 @@ lowercase → replace [^a-z0-9] with "-" → collapse "--" → trim → max 50 c
 - Job listings: [None/Few/Moderate/High]
 
 ### Industry Commentary
-- [Notable posts or "Limited data due to login walls"]
+- [Posts or "Limited - login walls"]
 
 ### Sources
 - [URLs]
 ```
 
----
-
-### 6. Web Research
-
-**Tools:** WebSearch → Brave news → Context7 MCP → agent-browser (if needed)
-
-**Process:**
-1. **Discovery:** WebSearch for `{topic} review OR comparison`
-2. **News:** Brave `brave_news_search` with `freshness: pm`
-3. **Docs:** Context7 `resolve-library-id` → `get-library-docs` (if applicable)
-4. **Deep content:** agent-browser for pricing pages, comparison tables
-
-**Write findings to:** `.claude/research-cache/<session_id>/web-findings.md`
-
-**Format:**
+### Web Findings
 ```markdown
 ## Web Findings
 
 ### Documentation
-- Source: [Context7/Official site]
-- Key capabilities: [list]
+- Source: [Context7/Official]
+- Capabilities: [list]
 
 ### News
 - [Date]: [Headline](URL) - [summary]
 
 ### Pricing
 - Model: [Free/Freemium/Paid/Enterprise]
-- Key tiers: [list]
 
 ### Competitors
 | Name | Difference |
 |------|------------|
-| [X]  | [Y]        |
 
 ### Sources
 - [URLs]
@@ -323,28 +210,23 @@ lowercase → replace [^a-z0-9] with "-" → collapse "--" → trim → max 50 c
 
 ---
 
-### 7. Synthesis
+## Key Insights Format (displayed immediately)
 
-**Process:**
-1. Read all 5 findings files from cache
-2. Identify common themes across sources
-3. Generate unified report
-
-**Output Key Insights (display immediately):**
 ```markdown
 ## Key Insights: <topic>
 
 **What it is:** [one sentence]
-**What's novel:** [key differentiator]
-**How it compares:** [competitive position]
+**What's novel:** [differentiator]
+**How it compares:** [position]
 **Bottom line:** [recommendation]
 
 📄 Full report: research/catalogue/YYYY-MM-DD-<slug>.md
 ```
 
-**Write full report to:** `research/catalogue/YYYY-MM-DD-<slug>.md`
+---
 
-**Report format:**
+## Full Report Format
+
 ```markdown
 ---
 topic: <topic>
@@ -368,44 +250,173 @@ sources: [github, reddit, twitter, linkedin, web]
 - LinkedIn: [summary]
 
 ## Competitive Landscape
-[From Web research]
+[From Web]
 
 ## Pros and Cons
 | Pros | Cons |
 |------|------|
 
 ## Sources
-[All URLs from all findings files]
+[All URLs]
 
 ---
 *Generated by Research Agent on YYYY-MM-DD*
 ```
 
-**Update index:** Append row to `research/catalogue.md`
+---
+
+## Catalogue Index Row
+
+```markdown
+| YYYY-MM-DD | Topic | [Sentiment] | [Report](catalogue/YYYY-MM-DD-slug.md) |
+```
 ```
 
-**Step 2: Verify file structure**
+**Step 2: Commit**
 
 ```bash
-head -50 .claude/skills/research/SKILL.md
+git add .claude/skills/research/templates.md
+git commit -m "docs: add research output templates"
 ```
+
+---
+
+## Task 4: Rewrite Main Research Skill (Concise)
+
+**Files:**
+- Modify: `.claude/skills/research/SKILL.md`
+
+**Step 1: Rewrite with concise format**
+
+Replace entire contents with:
+
+```markdown
+---
+name: research
+description: Use when given a topic, URL, or image to investigate across GitHub, Reddit, Twitter, LinkedIn, and web
+---
+
+# Research Agent
+
+Sequential multi-source research with full MCP access.
+
+## When to Use
+
+**Use for:** Products, tools, libraries, companies, technologies needing comprehensive analysis
+
+**Skip for:** Simple facts, definitions, quick lookups — answer directly
+
+## Quick Reference
+
+| Step | Tools | Output |
+|------|-------|--------|
+| Setup | Parse input, generate session ID | `.claude/research-cache/<session>/` |
+| GitHub | GitHub MCP | `github-findings.md` |
+| Reddit | WebSearch → Brave (`site:reddit.com`, `freshness: py`) | `reddit-findings.md` |
+| Twitter | WebSearch → Brave (`site:x.com`, `freshness: pm`) | `twitter-findings.md` |
+| LinkedIn | WebSearch (`allowed_domains: ["linkedin.com"]`) | `linkedin-findings.md` |
+| Web | WebSearch → Brave news → Context7 | `web-findings.md` |
+| Synthesis | Read all findings → Generate report | `research/catalogue/YYYY-MM-DD-<slug>.md` |
+
+## Workflow
+
+### 1. Setup
+
+1. Parse input: URL → extract domain/path | Image → Read + extract subject | Text → use directly
+2. Generate slug: `lowercase → replace [^a-z0-9] with "-" → collapse → trim 50 chars`
+3. Generate session ID: `YYYYMMDD-HHMMSS-<slug>`
+4. Create: `.claude/research-cache/<session_id>/`
+5. Display: `🔍 Researching **<topic>**...`
+
+### 2. GitHub Research
+
+**Tools:** GitHub MCP (`search_repositories`, `get_file_contents`, `list_issues`)
+
+1. Search for topic, find primary repo
+2. Examine README, issues, PRs, releases
+3. Assess: active/stale/abandoned
+4. Write to `github-findings.md` (see templates.md)
+
+### 3. Reddit Research
+
+**Tools:** WebSearch → Brave MCP → agent-browser (if needed)
+
+1. WebSearch `{topic}` to find themes
+2. Brave `brave_web_search`: `site:reddit.com {topic}`, `freshness: py`, `count: 20`
+3. If high-engagement thread: agent-browser for comments
+4. Write to `reddit-findings.md`
+
+### 4. Twitter Research
+
+**Tools:** WebSearch → Brave MCP
+
+1. WebSearch `{topic}` to find influencers, buzz
+2. Brave `brave_web_search`: `site:x.com OR site:twitter.com {topic}`, `freshness: pm`, `count: 20`
+3. Write to `twitter-findings.md`
+
+### 5. LinkedIn Research
+
+**Tools:** WebSearch only
+
+1. WebSearch with `allowed_domains: ["linkedin.com"]`
+2. Note: Login walls limit depth — capture what's visible
+3. Write to `linkedin-findings.md`
+
+### 6. Web Research
+
+**Tools:** WebSearch → Brave news → Context7 → agent-browser (if needed)
+
+1. WebSearch `{topic} review OR comparison`
+2. Brave `brave_news_search`, `freshness: pm`, `count: 20`
+3. Context7: `resolve-library-id` → `get-library-docs` (if applicable)
+4. agent-browser for pricing pages, comparison tables (if needed)
+5. Write to `web-findings.md`
+
+### 7. Synthesis
+
+1. Read all 5 findings files
+2. Identify themes across sources
+3. Display Key Insights immediately (see templates.md)
+4. Write full report to `research/catalogue/YYYY-MM-DD-<slug>.md`
+5. Append row to `research/catalogue.md`
+
+## Common Mistakes
+
+| Mistake | Fix |
+|---------|-----|
+| Skipping GitHub for non-code topics | Always check — many products have repos |
+| Deep-diving one source | Balance across all 5 |
+| Missing Context7 for libraries | Always try `resolve-library-id` |
+| Forgetting freshness params | Reddit: `py` (year), Twitter: `pm` (month) |
+
+## Output Formats
+
+See `templates.md` in this directory for all output formats.
+```
+
+**Step 2: Verify conciseness**
+
+```bash
+wc -w .claude/skills/research/SKILL.md
+```
+
+Expected: Under 500 words
 
 **Step 3: Commit**
 
 ```bash
 git add .claude/skills/research/SKILL.md
-git commit -m "feat: rewrite research skill for sequential MCP execution"
+git commit -m "feat: rewrite research skill - concise, sequential, MCP-enabled"
 ```
 
 ---
 
-## Task 4: Verify MCP Configuration
+## Task 5: Verify MCP Configuration
 
 **Files:**
 - Check: `~/.claude.json` (user-scope MCP)
-- Check: `.claude/settings.local.json` (project-scope, gitignored)
 
-**Step 1: Verify user-scope MCP has all servers**
+**Step 1: Verify all MCP servers present**
 
 ```bash
 grep -A5 '"brave-search"' ~/.claude.json
@@ -413,34 +424,17 @@ grep -A5 '"github"' ~/.claude.json
 grep -A5 '"context7"' ~/.claude.json
 ```
 
-Expected: All three servers present with correct config
+Expected: All three servers with correct config
 
-**Step 2: Verify Brave API key is set**
+**Step 2: Verify Brave API key**
 
 ```bash
 grep "BRAVE_API_KEY" ~/.claude.json | head -1
 ```
 
-Expected: API key present (not empty)
+Expected: Key present (not empty)
 
-**Step 3: No commit needed** (config files not in repo)
-
----
-
-## Task 5: Update .gitignore
-
-**Files:**
-- Modify: `.gitignore`
-
-**Step 1: Ensure prompts directory won't be recreated**
-
-Check current .gitignore is correct (should already have research-cache):
-
-```bash
-cat .gitignore
-```
-
-**Step 2: No changes needed if already correct**
+**Step 3: No commit needed** (user config not in repo)
 
 ---
 
@@ -453,34 +447,21 @@ cd /Users/razpetel/projects/researcher
 claude
 ```
 
-**Step 2: Test skill loads**
+**Step 2: Verify skill loads**
 
-Type `/` and verify `research` appears in autocomplete.
+Type `/` — verify `research` appears in autocomplete
 
-**Step 3: Run minimal test**
+**Step 3: Test minimal research**
 
 ```
-/research cursor ide --dry-run
+/research cursor ide
 ```
 
-Or just:
-```
-/research test
-```
+**Step 4: Verify outputs**
 
-**Step 4: Verify MCP tools accessible**
-
-In the session, the skill should be able to call:
-- GitHub MCP tools
-- Brave Search MCP tools
-- Context7 MCP tools
-
-**Step 5: Check output files created**
-
-```bash
-ls .claude/research-cache/
-ls research/catalogue/
-```
+- Cache files created in `.claude/research-cache/`
+- Report created in `research/catalogue/`
+- Index updated in `research/catalogue.md`
 
 ---
 
@@ -490,7 +471,16 @@ ls research/catalogue/
 |------|-------------|-------|
 | 1 | Remove old prompts | `.claude/prompts/` (delete) |
 | 2 | Update CLAUDE.md | `CLAUDE.md` |
-| 3 | Rewrite skill | `.claude/skills/research/SKILL.md` |
-| 4 | Verify MCP config | `~/.claude.json` (check only) |
-| 5 | Check .gitignore | `.gitignore` (verify) |
-| 6 | Smoke test | Manual test |
+| 3 | Create templates | `.claude/skills/research/templates.md` |
+| 4 | Rewrite skill (concise) | `.claude/skills/research/SKILL.md` |
+| 5 | Verify MCP config | `~/.claude.json` (check) |
+| 6 | Smoke test | Manual |
+
+## Hooks Assessment
+
+**No hooks needed.** The skill is self-contained:
+- Creates cache directory on demand
+- Handles errors inline
+- Validates inputs in workflow
+
+Hooks would add complexity without benefit.
