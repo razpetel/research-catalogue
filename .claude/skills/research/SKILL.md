@@ -17,7 +17,7 @@ Sequential multi-source research with full MCP access.
 
 | Step | Tools | Output |
 |------|-------|--------|
-| Setup | Parse input, generate session ID | `.claude/research-cache/<session>/` |
+| Setup | Parse input, check existing, generate session ID | `.claude/research-cache/<session>/` |
 | GitHub | GitHub MCP | `github-findings.md` |
 | Reddit | WebSearch → Brave (`site:reddit.com`, `freshness: py`) | `reddit-findings.md` |
 | Twitter | WebSearch → Brave (`site:x.com`, `freshness: pm`) | `twitter-findings.md` |
@@ -31,9 +31,12 @@ Sequential multi-source research with full MCP access.
 
 1. Parse input: URL → extract domain/path | Image → Read + extract subject | Text → use directly
 2. Generate slug: `lowercase → replace [^a-z0-9] with "-" → collapse → trim 50 chars`
-3. Generate session ID: `YYYYMMDD-HHMMSS-<slug>`
-4. Create: `.claude/research-cache/<session_id>/`
-5. Display: `Researching **<topic>**...`
+3. **Check for existing report:** Search `research/catalogue/` for `*-<slug>.md`
+   - If found: Read it for context (what was found before, when, key conclusions)
+   - Note: Merge decision happens in Synthesis after gathering new findings
+4. Generate session ID: `YYYYMMDD-HHMMSS-<slug>`
+5. Create: `.claude/research-cache/<session_id>/`
+6. Display: `Researching **<topic>**...` (add `(updating)` if existing report found)
 
 ### 2. GitHub Research
 
