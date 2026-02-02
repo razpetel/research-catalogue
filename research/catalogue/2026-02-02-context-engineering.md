@@ -247,6 +247,81 @@ When context is properly organized:
 | Granular Context Library | Selective, layered | Power users, businesses |
 | AGENTS.md | Passive injection | Project documentation |
 | Skills | On-demand invocation | Reusable workflows |
+| Thickness Hierarchy | Layered by token cost | Token optimization |
+
+---
+
+## Thickness Hierarchy (Schultz Framework)
+
+**Source:** [Joshua Schultz - Claude Code Complete Guide](https://joshuaschultz.com/ai/articles/claude-code-complete-guide/)
+
+An architectural principle from operations consultant Joshua Schultz that organizes Claude Code components by token consumption, pushing work toward deterministic (zero-token) execution.
+
+### The Hierarchy
+
+```
+┌─────────────────────────────────────────────────┐
+│ THINNEST (lowest token cost)                    │
+├─────────────────────────────────────────────────┤
+│ Commands        → Orchestration only            │
+│ Agents          → Strategic direction           │
+│ Skills          → Detailed procedures           │
+│ Scripts/YAML    → Zero-token deterministic      │
+├─────────────────────────────────────────────────┤
+│ THICKEST (highest token cost)                   │
+└─────────────────────────────────────────────────┘
+```
+
+### Core Principle
+
+> "Push as much work as possible to deterministic (non-token-using) parts."
+
+### Verification Tools Pattern
+
+Schultz advocates using external files as "mini-databases" that don't consume tokens:
+
+| Tool Type | Purpose | Example |
+|-----------|---------|---------|
+| **YAML files** | Quality gates | Coverage thresholds, complexity limits |
+| **Markdown templates** | Output formats | Exact structure enforcement |
+| **Checklists** | Pass/fail validation | Binary completion criteria |
+
+### Hooks as Guarantees
+
+A key insight: hooks provide **guarantees** while instructions provide **suggestions**.
+
+| Approach | Reliability | Token Cost |
+|----------|-------------|------------|
+| "Please format code before committing" | Low (may forget) | Tokens per reminder |
+| PreToolUse hook running Prettier | 100% (automated) | Zero tokens |
+
+### 10 Mastery Rules (Context-Relevant Subset)
+
+From Schultz's comprehensive guide, these rules directly impact context management:
+
+1. **Be specific, not vague** — Vague prompts waste tokens on clarification cycles
+2. **Plan before coding** — explore → plan → code → commit reduces rework
+3. **Clear context frequently** — Between unrelated tasks
+4. **Let hooks handle formatting/style** — Don't waste context on style instructions
+5. **Deploy subagents for verification** — Fresh context windows for focused tasks
+6. **Reference files explicitly with paths** — Reduces Claude's search overhead
+7. **Course-correct early via interrupts** — Don't let Claude wander consuming tokens
+8. **Iterate on CLAUDE.md deliberately** — Test changes incrementally
+
+### Six-Layer Architecture
+
+Schultz's full architecture maps to context loading:
+
+```
+CLAUDE.md → Commands → Agents → Skills → Hooks → Plugins/MCP
+   ↓           ↓          ↓        ↓        ↓          ↓
+Always    On-demand   Delegated  Invoked  Automated  External
+loaded    triggered   contexts   on-need  zero-token  services
+```
+
+### Non-Developer Application
+
+Uniquely, Schultz applies this framework to business operations (marketing, financial analysis), demonstrating that context engineering principles extend beyond software development.
 
 ---
 
@@ -425,6 +500,7 @@ claude --session=api "Handle only backend logic"
 - [ClaudeFast: Context Management Mechanics](https://claudefa.st/blog/guide/mechanics/context-management)
 - [ChatPRD: Granular Context Library for Lazy Prompting](https://www.chatprd.ai/how-i-ai/workflows/how-to-create-a-granular-context-library-for-lazy-prompting-with-ai)
 - [Creator Economy: Automate Your Life with Claude Code (Teresa Torres)](https://creatoreconomy.so/p/automate-your-life-with-claude-code-teresa-torres)
+- [Joshua Schultz: Claude Code Complete Guide](https://joshuaschultz.com/ai/articles/claude-code-complete-guide/) — Thickness Hierarchy framework
 
 ### Community
 - [Reddit r/ClaudeCode: Context management plugin (claude-mem)](https://www.reddit.com/r/ClaudeCode/comments/1odoo3k/i_built_a_context_management_plugin_and_it/)
