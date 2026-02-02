@@ -17,7 +17,7 @@ Sequential multi-source research with full MCP access.
 
 | Step | Tools | Output |
 |------|-------|--------|
-| Setup | Parse input, check existing, generate session ID | `.claude/research-cache/<session>/` |
+| Setup | Parse input, read catalogue.md, semantic match | 📋 Related reports: [...] |
 | GitHub | GitHub MCP | `github-findings.md` |
 | Reddit | WebSearch → Brave (`site:reddit.com`, `freshness: py`) | `reddit-findings.md` |
 | Twitter | WebSearch → Brave (`site:x.com`, `freshness: pm`) | `twitter-findings.md` |
@@ -31,12 +31,22 @@ Sequential multi-source research with full MCP access.
 
 1. Parse input: URL → extract domain/path | Image → Read + extract subject | Text → use directly
 2. Generate slug: `lowercase → replace [^a-z0-9] with "-" → collapse → trim 50 chars`
-3. **Check for existing report:** Search `research/catalogue/` for `*-<slug>.md`
-   - If found: Read it for context (what was found before, when, key conclusions)
+3. **Check for related reports (MANDATORY):**
+   - Read `research/catalogue.md`
+   - Scan Topic and Summary columns for semantic overlap with research subject
+   - Related if: same product/tool, competing product, subset/superset topic, or prior version
+   - **MUST display:**
+     ```
+     📋 Related reports: [NONE | list with dates]
+     ```
+   - If related found: Read the most relevant report, display:
+     ```
+     📄 Prior research ([DATE]): [1-line key conclusion]
+     ```
    - Note: Merge decision happens in Synthesis after gathering new findings
 4. Generate session ID: `YYYYMMDD-HHMMSS-<slug>`
 5. Create: `.claude/research-cache/<session_id>/`
-6. Display: `Researching **<topic>**...` (add `(updating)` if existing report found)
+6. Display: `Researching **<topic>**...` (add `(updating [DATE])` if related report found)
 
 ### 2. GitHub Research
 
@@ -84,23 +94,19 @@ Sequential multi-source research with full MCP access.
 
 ### 7. Synthesis
 
-**Before writing, check for existing report:**
+**If related report was found in Setup, decide how to proceed:**
 
 ```
 ┌─────────────────────────────────────┐
-│ Search research/catalogue/ for      │
-│ *-<slug>.md                         │
+│ Related report from Setup?          │
 └──────────────┬──────────────────────┘
                │
-      ┌────────▼────────┐
-      │ Existing found? │
-      └────────┬────────┘
         yes    │    no
     ┌──────────┴──────────┐
     ▼                     ▼
 ┌───────────┐      ┌─────────────┐
-│ Read it,  │      │ Write new   │
-│ compare   │      │ report      │
+│ Compare   │      │ Write new   │
+│ findings  │      │ report      │
 └─────┬─────┘      └─────────────┘
       │
       ▼
@@ -137,11 +143,13 @@ Sequential multi-source research with full MCP access.
 
 | Mistake | Fix |
 |---------|-----|
+| Skipping catalogue check | ALWAYS read catalogue.md in Setup, display 📋 output |
+| Slug-only matching | Use semantic matching — "Mem0" relates to "memory layer" |
+| Missing the 📋 output | If you didn't display it, you didn't check |
 | Skipping GitHub for non-code topics | Always check — many products have repos |
 | Deep-diving one source | Balance across all 5 |
 | Missing Context7 for libraries | Always try `resolve-library-id` |
 | Forgetting freshness params | Reddit: `py` (year), Twitter: `pm` (month) |
-| Creating duplicate reports | Check catalogue for existing before synthesis |
 
 ## Output Formats
 
