@@ -1,12 +1,15 @@
 # Environment
 .env
 .env.local
+.env.example
 
-# MCP settings with API keys
-.claude/settings.local.json
+# Claude Code
+.claude/
 
-# Research cache
-.claude/research-cache/
+# Workspace files (kept locally, not in repo)
+CLAUDE.md
+docs/
+scripts/
 
 # OS
 .DS_Store
