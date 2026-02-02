@@ -1,6 +1,6 @@
-# Research Agent
+# Research Workspace
 
-Sequential multi-source research with full MCP access.
+This repo uses the **fomo-researcher** plugin for multi-source research.
 
 ## Quick Start
 
@@ -10,30 +10,16 @@ Sequential multi-source research with full MCP access.
 
 Skip for simple factual questions — answer directly.
 
-## Tools
+## Plugin
 
-| Tool | Use For |
-|------|---------|
-| GitHub MCP | Repository health, issues, code |
-| Brave Search MCP | Web search with freshness, news |
-| Context7 MCP | Library/framework docs |
-| WebSearch | Quick discovery, domain filtering |
-| agent-browser | Deep content extraction |
+Research skill provided by: `fomo-researcher@razpetel`
 
-## Research Flow
-
-1. **GitHub** → Repository health, technical signals
-2. **Reddit** → Community sentiment (Brave search)
-3. **Twitter** → Real-time buzz (Brave search)
-4. **LinkedIn** → Professional adoption (WebSearch)
-5. **Web** → News, docs, comparisons (Brave + Context7)
-6. **Synthesis** → Unified report
+Install: `/plugin marketplace add razpetel/fomo-researcher && /plugin install fomo-researcher@razpetel`
 
 ## Paths
 
 | Path | Purpose |
 |------|---------|
-| `.claude/skills/research/` | Skill + templates |
 | `.claude/research-cache/` | Session temp data |
-| `research/catalogue.md` | Index |
-| `research/catalogue/` | Reports |
+| `research/catalogue.md` | Index of all reports |
+| `research/catalogue/` | Research reports |
