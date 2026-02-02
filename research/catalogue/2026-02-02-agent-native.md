@@ -59,6 +59,55 @@ From Dan Shipper's guide:
 4. **Emergent Capability**: Agents accomplish unanticipated tasks
 5. **Improvement Over Time**: Applications enhance through context and prompt refinement
 
+### Iterative Agent Development Method
+
+A practical bottom-up approach for building agents organically using Claude Code as the prototyping environment:
+
+**The Process:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 1. START: Ask Claude Code to do the task you want          │
+│    your agent to do (e.g., "manage my email")              │
+├─────────────────────────────────────────────────────────────┤
+│ 2. DISCOVER: Claude says "if I had access to X..."         │
+│    → Build that tool with Claude's help                    │
+├─────────────────────────────────────────────────────────────┤
+│ 3. EXPAND: Repeat for each capability needed               │
+│    (email → calendar → contacts → etc.)                    │
+├─────────────────────────────────────────────────────────────┤
+│ 4. OBSERVE: See where it fails                             │
+│    → Create workflows to handle failure patterns           │
+├─────────────────────────────────────────────────────────────┤
+│ 5. SPECIALIZE: Tasks needing lots of context/expertise     │
+│    → Create dedicated subagents                            │
+├─────────────────────────────────────────────────────────────┤
+│ 6. PRODUCTIONIZE: When working locally with high-touch     │
+│    → Port to Claude Code SDK, or                           │
+│    → Simplify to basic LLM API calls                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Why It Works:**
+- Claude Code itself becomes the rapid prototyping environment
+- You discover required capabilities organically through actual usage
+- Natural progression from interactive → automated
+- Subagents emerge from real needs, not premature abstraction
+- The "high-touch" local phase validates the design before productionizing
+
+**Example - Personal Assistant Agent:**
+
+| Phase | Action | Outcome |
+|-------|--------|---------|
+| Start | "Manage my email" | Claude needs email access |
+| Tool 1 | Build email MCP/tool | Can read/send email |
+| Tool 2 | Build calendar tool | Can check availability |
+| Observe | Fails at prioritization | Create priority workflow |
+| Specialize | Complex scheduling | Dedicated scheduling subagent |
+| Ship | Working locally | Port to SDK or simplify |
+
+**Key Insight:** The most natural path to an agent is letting Claude Code show you what it needs, rather than architecting upfront.
+
 ## User Sentiment
 
 **Overall: Positive with Infrastructure Concerns**
