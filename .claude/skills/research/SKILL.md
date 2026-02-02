@@ -31,12 +31,9 @@ Sequential multi-source research with full MCP access.
 
 1. Parse input: URL → extract domain/path | Image → Read + extract subject | Text → use directly
 2. Generate slug: `lowercase → replace [^a-z0-9] with "-" → collapse → trim 50 chars`
-3. **Check for existing report:** Search `research/catalogue/` for `*-<slug>.md`
-   - If found: Ask user "Update existing report or create new?"
-   - If update: Read existing report, note what to refresh
-4. Generate session ID: `YYYYMMDD-HHMMSS-<slug>`
-5. Create: `.claude/research-cache/<session_id>/`
-6. Display: `Researching **<topic>**...` (or `Updating **<topic>**...`)
+3. Generate session ID: `YYYYMMDD-HHMMSS-<slug>`
+4. Create: `.claude/research-cache/<session_id>/`
+5. Display: `Researching **<topic>**...`
 
 ### 2. GitHub Research
 
@@ -84,14 +81,54 @@ Sequential multi-source research with full MCP access.
 
 ### 7. Synthesis
 
+**Before writing, check for existing report:**
+
+```
+┌─────────────────────────────────────┐
+│ Search research/catalogue/ for      │
+│ *-<slug>.md                         │
+└──────────────┬──────────────────────┘
+               │
+      ┌────────▼────────┐
+      │ Existing found? │
+      └────────┬────────┘
+        yes    │    no
+    ┌──────────┴──────────┐
+    ▼                     ▼
+┌───────────┐      ┌─────────────┐
+│ Read it,  │      │ Write new   │
+│ compare   │      │ report      │
+└─────┬─────┘      └─────────────┘
+      │
+      ▼
+┌─────────────────────────────────────┐
+│ What changed?                       │
+│ • New findings contradict old?      │
+│ • Significant updates (stars, etc)? │
+│ • Same conclusions?                 │
+└──────────────┬──────────────────────┘
+               │
+    ┌──────────┴──────────┐
+    ▼                     ▼
+┌───────────┐      ┌─────────────┐
+│ Merge:    │      │ Minor: keep │
+│ update    │      │ old, note   │
+│ report    │      │ "verified"  │
+└───────────┘      └─────────────┘
+```
+
+**Then synthesize:**
 1. Read all 5 findings files
-2. Identify themes across sources
-3. Display Key Insights immediately (see templates.md)
-4. Write full report to `research/catalogue/YYYY-MM-DD-<slug>.md`
-   - If updating: Overwrite existing file, preserve useful historical context
-5. Update `research/catalogue.md` (columns: Date | Topic | Summary | Sentiment | Report):
-   - If new: Append row with 2-3 sentence summary (what it is, key finding, recommendation)
-   - If update: Update existing row's date, summary, and sentiment
+2. If existing report: Compare findings, identify what changed
+3. Identify themes across sources
+4. Display Key Insights immediately (see templates.md)
+5. Write report to `research/catalogue/YYYY-MM-DD-<slug>.md`
+   - New topic: Create fresh report
+   - Changed significantly: Merge new findings, note what evolved
+   - Minor changes: Update date, add "Last verified" note
+6. Update `research/catalogue.md` (columns: Date | Topic | Summary | Sentiment | Report):
+   - New: Append row with 2-3 sentence summary
+   - Update: Revise existing row's date, summary, and sentiment
 
 ## Common Mistakes
 
@@ -101,6 +138,7 @@ Sequential multi-source research with full MCP access.
 | Deep-diving one source | Balance across all 5 |
 | Missing Context7 for libraries | Always try `resolve-library-id` |
 | Forgetting freshness params | Reddit: `py` (year), Twitter: `pm` (month) |
+| Creating duplicate reports | Check catalogue for existing before synthesis |
 
 ## Output Formats
 
