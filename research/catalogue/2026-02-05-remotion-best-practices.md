@@ -1,171 +1,200 @@
-# Remotion Best Practices Skill
+# Remotion: AI-Generated Video via Claude Code Skills
 
-**Date:** 2026-02-05
+**Date:** 2026-02-19 (updated from 2026-02-05)
 **URL:** https://skills.sh/remotion-dev/skills/remotion-best-practices
-**Sentiment:** Very Positive
+**Sentiment:** Positive (moderated from Very Positive)
 
 ## Summary
 
-The remotion-best-practices skill is the official first-party Claude Code skill from Remotion (35K GitHub stars), the React-based framework for programmatic video creation. Released January 19, 2026, it has already reached 68.1K weekly installs with 54.7K on Claude Code alone. The skill provides 34 rule files covering animations, 3D/Three.js, audio/video handling, captions, charts, and more—essentially a complete knowledge base for AI-assisted video creation. The Remotion + Claude Code combination went viral in January 2026 ("7M+ views") and represents a paradigm shift from "learning to code videos" to "describing videos in conversation."
+Remotion's official Claude Code skill, released January 19, 2026, transformed a React-based video framework (37K GitHub stars) into the flagship example of AI-assisted video creation. The January viral moment (8.89M views on X) has matured from "look what's possible" demos into real product video pipelines: developers are shipping actual advertisements, SaaS demos, and educational content. A second-generation ecosystem of custom skills (ElevenLabs voiceover + music, Figma MCP integration) and community MCP servers has emerged on top of the base skill. However, the "2 minutes, 2-3 prompts" hype doesn't match reality -- realistic timelines are 10-30 minutes for simple promos and 1-2 hours for polished product videos. Emerging backlash against "Remotion spam" on Reddit and honest assessments from the founder ("this workflow is not perfect") have moderated the initial euphoria into cautious optimism.
 
-## Key Metrics
+## Key Metrics (Updated Feb 19 vs Feb 5)
 
-| Metric | Value |
-|--------|-------|
-| Weekly Installs | 68.1K |
-| Claude Code Installs | 54.7K |
-| First Seen | January 19, 2026 |
-| Skills Repo Stars | 1,379 |
-| Main Repo Stars | 35,105 |
-| Rule Files | 34 |
+| Metric | Feb 5 | Feb 19 | Delta |
+|--------|-------|--------|-------|
+| Main Repo Stars | 35,105 | 37,169 | +2,064 (+5.9%) |
+| Skills Repo Stars | 1,379 | 1,651 | +272 (+19.7%) |
+| Skills Repo Forks | -- | 196 | -- |
+| Rule Files | 34 | 37 | +3 new |
+| Releases (14 days) | -- | 7 | v4.0.419-v4.0.425 |
+| Viral Tweet Views | 7M+ | 8.89M | Final count |
+| Weekly Installs | 68.1K | -- | (not re-checked) |
+| Community Projects | -- | 8+ | New since launch |
+| Tutorial Articles | ~12 | 20+ | Multi-language |
 
-## Remotion Framework
+## What Changed in 14 Days
 
-| Metric | Value |
-|--------|-------|
-| GitHub Stars | 35,105 |
-| Created | June 2020 |
-| Funding | CHF 180K seed |
-| Profitable | Yes (2024+) |
-| License | Source-available (free for individuals) |
+### 1. From Demos to Shipping Real Product Videos
 
-**Founders:** Jonny Burger, Mehmet Ademi, Patric Salvisberg (Switzerland)
+The community has moved past experimentation. Named examples of real product videos:
+- **SearchMira.ai** -- product launch video (took a full day, honest assessment)
+- **SpecStory** -- 39-second product video by Greg Ceccarelli (ex-CPO Pluralsight), 200K+ views on X, $0 cost
+- **Mythril** -- marketing video using Framer landing page assets
+- **Polymarket** -- promotional video in 30 minutes using 4-5 prompts
+- Multiple unnamed SaaS demos, landing page videos, and educational content
 
-## What the Skill Provides
+### 2. Second-Generation Ecosystem
 
-### Installation
-```bash
-npx skills add https://github.com/remotion-dev/skills --skill remotion-best-practices
-```
+Custom skills and integrations built *on top of* the base Remotion skill:
 
-### Coverage Areas (34 Rule Files)
+| Tool | What It Does | Source |
+|------|-------------|--------|
+| `maartenlouis/elevenlabs-remotion-skill` | Full promo videos with Animation + ElevenLabs Voice + Music, Whisper timing correction | r/ClaudeCode |
+| Figma MCP + Remotion pipeline | Design frames in Figma -> import via MCP -> Claude generates Remotion components -> render | r/ClaudeCode (60 upvotes) |
+| `terminalgravity-video-mcp` | MCP server integrating Gemini API, ElevenLabs, Mubert for end-to-end video | LobeHub |
+| `DojoCodingLabs/remotion-superpowers` | Full video production studio: 5 MCP servers, 13 commands, TikTok captions, AI review loop | GitHub |
 
-**Media Handling:**
-- images.md, videos.md, audio.md, gifs.md, transparent-videos.md
+### 3. Three New Rule Files
 
-**Animation & Effects:**
-- animations.md, timing.md, transitions.md, text-animations.md, light-leaks.md
+| New Skill | Added | Description |
+|-----------|-------|-------------|
+| `voiceover.md` | Feb 13 | ElevenLabs TTS voiceover integration |
+| `ffmpeg.md` | Feb 5 | FFmpeg media manipulation |
+| `audio-visualization.md` | Feb 5 | Audio-reactive visualizations |
 
-**3D & Advanced:**
-- 3d.md (Three.js/React Three Fiber), lottie.md, charts.md, maps.md
+### 4. Platform Expansion
 
-**Technical:**
-- compositions.md, sequencing.md, trimming.md, calculate-metadata.md, parameters.md, tailwind.md
+Skills now work beyond Claude Code:
+- **OpenAI Codex** -- user edited video 100% with Codex (SAM3 + MatAnyone + Remotion)
+- **Cursor** -- supported
+- **Gemini CLI** -- confirmed working (community says Claude Code quality is better)
+- **TRAE** (ByteDance) -- ported
+- **Google AntiGravity** -- tested with Remotion + Three.js
 
-**Captions & Text:**
-- subtitles.md, display-captions.md, import-srt-captions.md, transcribe-captions.md, measuring-text.md, fonts.md
+### 5. Startups Responding to the Viral Moment
 
-**Utilities (Mediabunny):**
-- can-decode.md, extract-frames.md, get-audio-duration.md, get-video-dimensions.md, get-video-duration.md
+| Startup | Problem Solved | Status |
+|---------|---------------|--------|
+| **FluentFrame** | Non-React users need motion graphics from prompts | r/SaaS launch |
+| **FreeMotion** (freemotion.dev) | Browser-based Remotion editor + auto-styling | r/vibecoding launch |
+| **AppLaunchFlow** | App Store screenshots -> promo video automatically | r/ClaudeCode MVP |
 
-## The Viral Moment
+## Realistic Time Estimates (Community Consensus)
 
-In January 2026, Remotion + Claude Code integration went viral:
+| Claim | Reality |
+|-------|---------|
+| "2 minutes, 2-3 prompts" | Marketing hype |
+| 10-30 minutes for simple promo | Achievable for dev-literate users |
+| 1-2 hours for polished product video | Realistic for first-timers |
+| Full day for complex branded video | Honest experience for non-devs |
 
-**"7M+ views. Thousands of people generating videos from terminal prompts."** — r/SaaS
+## What Works Well (Sweet Spot)
 
-**Key quotes from Reddit:**
-- "This changes everything for video creation with AI"
-- "No After Effects. No Blender timeline hell. Just code."
-- "Want 500 product videos with different text/colors? Loop it."
-- "Version control your entire video pipeline? It's literally React."
+- **Product launch videos** (30-60 seconds)
+- **SaaS demo reels** with screen recordings + animated overlays
+- **Data visualizations** animated from CSV/API data
+- **Social media cards** with motion
+- **Template-based batch content** (e.g., 500 product variations from one template)
+- **Educational content** at scale (50 anatomy videos in 2 weeks, 92% cost savings reported)
 
-## How It Works
+## What Struggles
 
-1. **Remotion treats video as React components** — each frame is JSX with CSS
-2. **Claude Code writes the components** — using the skill's 34 rule files as reference
-3. **FFmpeg stitches frames into MP4** — deterministic, editable output
-4. **Result:** Professional videos from natural language prompts
+- Complex multi-scene narratives requiring precise timing
+- Beat/transition synchronization with audio
+- Generic-looking output (the "Branding Headache")
+- Non-developers lacking React knowledge still hit walls
+- Prompt quality dependency -- results vary significantly
 
-This is fundamentally different from diffusion-based video generation (Sora, etc.):
-- Deterministic (same code = same video)
-- Editable (modify code, re-render)
-- Scalable (loop over data for variations)
-- Version-controllable (it's just React code)
+## Pricing (Unchanged)
 
-## Platform Support
+| Tier | Cost | For |
+|------|------|-----|
+| Free | $0 | Individuals, teams ≤3, non-profits |
+| Creators | $25/mo per seat | Individual video creators |
+| Automators | $0.01/render ($100/mo min) | Video tool builders |
+| Enterprise | From $500/mo | Custom terms, consulting |
 
-| Platform | Installs |
-|----------|----------|
-| Claude Code | 54.7K |
-| Gemini CLI | Supported |
-| Cursor | Supported |
-| Antigravity | Supported |
-| OpenCode | Supported |
-| Codex | Supported |
+Remotion 5.0 is still pending (current: v4.0.425). Planned changes: contractors count toward team size, updated T&C, minimum Node 18, Zod v4 support.
 
-## User Sentiment
+## Sentiment Analysis
 
-**Overall:** Very Positive
-**Confidence:** High
+### Positive Signals
+- "I made this demo video with Claude and remotion. Immediately cancelled my Descript sub" -- real tool displacement
+- "AI + Remotion + Three.js is the unholy trinity I didn't know I needed"
+- Jonny Burger's follower growth: under 10K to 30K from the viral moment
+- Hostinger sponsoring YouTube tutorials -- commercial ecosystem forming
+- ElevenLabs publishing complementary Agent Skills for voiceover
 
-### Praise
-- "Genuinely changed how I approach video content creation"
-- "Think about it: programmatic 3D videos"
-- "Professional content with zero video skills"
-- "The developer stack that turned video production into a git commit"
+### Emerging Backlash
+- "Fuck your remotion spam" (r/ClaudeAI) -- post fatigue in Claude-related subreddits
+- "Most of the hype you see on X is total bullshit" -- Alex McFarland (while still endorsing the tool)
+- "You're not generating videos with prompts -- you're generating React code that *then* renders into videos" -- QuickLeap
+- Founder himself: "This workflow is not perfect. Things will go wrong and knowing how to intervene and having technical knowledge is still a useful skill to have."
+- Reddit skeptic (106 upvotes): "Claude Code hasn't really changed in months but suddenly everyone's acting like it just launched" -- noting the viral moment was Remotion's skill, not a Claude Code update
 
-### Concerns
-- Learning curve for non-React developers
-- Setup complexity (multiple tutorials dedicated to it)
-- Local rendering requires compute resources
+### Critical Discourse (LinkedIn)
+- Ortal Lasry: This is "rendering, not generating" -- fundamentally an editing/rendering tool, not generative AI
+- Paolo Perrone: Reproducibility concerns about videos as code artifacts regenerated from prompts
+- Professional audience is narrow but enthusiastic (developer-founders who also produce content)
 
-## Context7 Documentation Quality
+## Founder Activity
 
-| Metric | Value |
-|--------|-------|
-| Library ID | /remotion-dev/remotion |
-| Code Snippets | 3,146 |
-| Source Reputation | High |
-| Benchmark Score | 93.1 |
+**Jonny Burger** (@JNYBGR, Remotion CEO):
+- Published 9-minute video walkthrough (124 likes on LinkedIn)
+- Explicitly measured tone: positions Remotion as NOT an AI-first tool; Agent Skills are "markdown files enabling AI integration"
+- Using Claude Code himself to generate PRs (noted in `@remotion/vercel` PR description)
+- New `@remotion/vercel` package in development for serverless rendering on Vercel Sandbox
 
-Well-documented patterns for:
-- Spring animations (physics-based motion)
-- Interpolation with easing curves
-- Color interpolation
-- Chained/sequenced animations
-- Zod schemas for type-safe parameters
+## Comparison: Remotion vs. Generative AI Video
 
-## Comparison
+| Aspect | Remotion + Claude Code | Runway / Sora / Seedance |
+|--------|----------------------|--------------------------|
+| **Approach** | Deterministic rendering from code | Probabilistic diffusion generation |
+| **Control** | Pixel-perfect, frame-accurate | Approximate, prompt-dependent |
+| **Repeatability** | Same code = same video | Varies between generations |
+| **Editability** | Full source code, git-controlled | Re-generate from scratch |
+| **Scalability** | Parameterized templates, batch thousands | One-at-a-time |
+| **Best for** | Branded/templated content at scale | Cinematic footage, photorealistic scenes |
 
-| Approach | Pros | Cons |
-|----------|------|------|
-| **Remotion + Claude** | Deterministic, editable, scalable | Learning curve, setup |
-| **Diffusion (Sora)** | No code needed | Non-deterministic, can't edit |
-| **Higgsfield** | Accessible UI | Less control |
-| **After Effects** | Industry standard | Manual, expensive |
+**Hybrid workflows documented:** Use Runway/Kling for cinematic backgrounds, then layer Remotion animations and text on top.
+
+## The "Vibe Editing" Meme
+
+A new term has emerged: **"Vibe Editing"** -- creating videos by describing them to Claude Code rather than using timeline-based editors. Part of the broader "vibe coding" movement. StartupHub.ai: "Vibe Editing is going to kill Motion."
 
 ## Bottom Line
 
-The remotion-best-practices skill is the definitive way to create programmatic videos with Claude Code. First-party support from the Remotion team, comprehensive documentation across 34 rule files, and explosive adoption (68K weekly installs in 2 weeks) make this essential for developers wanting AI-assisted video creation. The paradigm—React components rendered to MP4—is uniquely suited to AI assistance: Claude writes deterministic code, you get editable, version-controlled video. If you're a developer who wants to create videos without learning After Effects, this is the tool.
+The Remotion + Claude Code skill remains the most impactful example of AI-assisted programmatic video creation. The ecosystem has matured significantly in two weeks -- from viral demos to real product pipelines, custom skills with voiceover/music, and multiple startups building on the momentum. However, the sentiment has appropriately moderated: the "2 minutes to a polished video" hype doesn't match the 10-120 minute reality, React knowledge is still effectively required, and the volume of promotional content has started to annoy some community members. For developers creating product videos, SaaS demos, or batch educational content, this is genuinely useful and continues to improve rapidly (7 releases in 14 days, 3 new skills). For non-developers or complex branded content, the gap remains significant -- consider FluentFrame or wait for the ecosystem to mature further.
 
 ## Sources
 
 ### Primary
 - [skills.sh Page](https://skills.sh/remotion-dev/skills/remotion-best-practices)
-- [remotion-dev/skills Repository](https://github.com/remotion-dev/skills)
-- [remotion-dev/remotion Repository](https://github.com/remotion-dev/remotion)
+- [remotion-dev/skills Repository](https://github.com/remotion-dev/skills) (1,651 stars)
+- [remotion-dev/remotion Repository](https://github.com/remotion-dev/remotion) (37,169 stars)
+- [Remotion Official Docs: AI/Skills](https://www.remotion.dev/docs/ai/skills)
+- [Remotion Pricing](https://www.remotion.pro/license)
 
 ### Founder
-- [Jonny Burger LinkedIn](https://linkedin.com/in/jonny-burger-4115109b)
+- [Jonny Burger LinkedIn Showcase](https://www.linkedin.com/posts/jonny-burger-4115109b_make-videos-from-prompting-with-remotion-activity-7420488797840138240-Uu86)
 - [Jonny Burger Twitter](https://x.com/JNYBGR)
 - [Crunchbase Profile](https://www.crunchbase.com/organization/remotion-9813)
 
-### Coverage
-- [Medium: Complete Guide to Remotion and Claude Code](https://medium.com/@creativeaininja/making-videos-with-code-the-complete-guide-to-remotion-and-claude-code-82892e21d022)
-- [Medium: Remotion turned Claude Code into a video production tool](https://jpcaparas.medium.com/remotion-turned-claude-code-into-a-video-production-tool-f83fd761b158)
-- [gaga.art: Remotion Skills Guide](https://gaga.art/blog/remotion-skills/)
-- [apidog: Turn Claude Code into a Video Director](https://apidog.com/blog/claude-code-remotion/)
+### Community Ecosystem
+- [ElevenLabs Remotion Skill (maartenlouis)](https://playbooks.com/skills/maartenlouis/elevenlabs-remotion-skill/)
+- [Remotion Video MCP Server (LobeHub)](https://lobehub.com/mcp/terminalgravity-video-mcp)
+- [DojoCodingLabs/remotion-superpowers](https://github.com/DojoCodingLabs/remotion-superpowers)
+- [ElevenLabs Agent Skills](https://elevenlabs.io/blog/elevenlabs-agent-skills)
 
-### Community
-- [r/MotionDesign Setup Guide](https://www.reddit.com/r/MotionDesign/comments/1qkqxwm/complete_guide_how_to_setup_remotion_agent_skills/)
-- [r/ClaudeAI Discussion](https://www.reddit.com/r/ClaudeAI/comments/1qkbbyv/remotion_turned_claude_code_into_a_video/)
-- [r/ClaudeCode Three.js Thread](https://www.reddit.com/r/ClaudeCode/comments/1qm1l9o/remotion_threejs_is_genuinely_insane_and_i_cant/)
+### Coverage & Guides
+- [Alex McFarland: "Claude Code Can Make Videos Now"](https://alexmcfarland.substack.com/p/claude-code-can-make-videos-now-full)
+- [QuickLeap: Hype vs Reality Review](https://quickleap.io/blog/remotion-claude-code-skill-review)
+- [VidAU.ai: Claude AI + Remotion for Non-Coders](https://www.vidau.ai/claude-ai-makes-remotion-video-editing-easy/)
+- [StartupHub.ai: Remotion AI Video](https://www.startuphub.ai/ai-news/artificial-intelligence/2026/make-videos-with-claude-code-remotion-ai-video-makes-production-code-from-plain-prompts)
+- [DEV Community: Programmatic Video Pipeline](https://dev.to/ryancwynar/i-built-a-programmatic-video-pipeline-with-remotion-and-you-should-too-jaa)
+- [Kristopher Dunham: Complete Guide](https://medium.com/@creativeaininja/making-videos-with-code-the-complete-guide-to-remotion-and-claude-code-82892e21d022)
 
-### Documentation
-- [Remotion Official Docs](https://www.remotion.dev)
-- [Context7 Remotion Docs](https://context7.com/remotion-dev/remotion)
-- [Seed Funding Announcement](https://www.remotion.dev/blog/seed-funding)
+### Reddit Threads
+- [r/ClaudeCode: Custom Remotion Agent Skill (Animation + Voice + Music)](https://www.reddit.com/r/ClaudeCode/comments/1qsssl3/)
+- [r/ClaudeCode: Claude + Remotion + Figma MCP](https://www.reddit.com/r/ClaudeCode/comments/1r748to/)
+- [r/OpenAI: Edited Video 100% With Codex + SAM3 + MatAnyone + Remotion](https://www.reddit.com/r/OpenAI/comments/1r04ebp/)
+- [r/ClaudeAI: Product Launch Video (searchmira.ai)](https://www.reddit.com/r/ClaudeAI/comments/1qnhqqr/)
+- [r/SaaS: "Massive gap in the market" (FluentFrame)](https://www.reddit.com/r/SaaS/comments/1qk0ti6/)
+
+### LinkedIn Posts
+- [Shubham Saboo: One Prompt, Full Video (462 likes)](https://www.linkedin.com/posts/shubhamsaboo_claude-code-can-now-create-videos-remotion-activity-7419946039786471425-f1DM)
+- [Greg Ceccarelli: $0 Product Video (200K views)](https://www.linkedin.com/posts/gregceccarelli_build-a-product-video-in-a-day-agentically-activity-7358170392311590912-d2pU)
+- [Sanju Lokuhitige: Mythril Marketing Video](https://www.linkedin.com/posts/sanjuruk_remotion-claudecode-typescript-activity-7422001580763193345-1-DE)
 
 ---
-*Generated by Research Agent on 2026-02-05*
+*Generated by Research Agent on 2026-02-05, updated 2026-02-19*
