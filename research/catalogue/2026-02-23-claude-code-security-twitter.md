@@ -25,21 +25,11 @@ The tweet included a link to the blog post and a promotional video/image (`pic.t
 
 ## Stock Market Impact
 
-The financial carnage was swift and broad-based. Specific declines on Friday, February 20:
+> For the full stock market impact table, see the [main Claude Code Security report](2026-02-23-claude-code-security.md#stock-market-impact).
 
-| Company | Ticker | Decline |
-|---------|--------|---------|
-| **JFrog** | FROG | **~25%** |
-| **SailPoint** | SAIL | **~9.4%** |
-| **Okta** | OKTA | **~9.2%** |
-| **Cloudflare** | NET | **~8.1%** |
-| **CrowdStrike** | CRWD | **~8%** |
-| **Zscaler** | ZS | **~5.5%** |
-| **Global X Cybersecurity ETF** | BUG | Hit lowest close since **November 2023** |
+The financial carnage was swift and broad-based, with an estimated **$10-15 billion** in market value wiped on Friday, February 20 (sources vary: Enterprise AI / Economic Times reports $10B; Live Bitcoin News and Sovereign Magazine report $15B). Among the hardest-hit names, **JFrog (FROG) dropped approximately 25%** -- far outpacing the single-digit declines of CrowdStrike, Cloudflare, and Okta -- reflecting the market's read that its DevOps/supply-chain security positioning placed it squarely in Claude Code Security's path.
 
-Total estimated market value wiped: **$10-15 billion** (sources vary; Enterprise AI / Economic Times reports $10B, Live Bitcoin News and Sovereign Magazine report $15B).
-
-This was notably the **second** Anthropic-triggered enterprise software selloff in February 2026, following the "SaaSpocalypse" triggered by Claude Cowork earlier in the month.
+This was notably the **second** Anthropic-triggered enterprise software selloff in February 2026 -- the "**second SaaSpocalypse**" -- following the one triggered by the Claude Cowork announcement earlier in the month. The term "SaaSpocalypse" was used across financial Twitter and crypto influencer accounts to frame both events as part of a broader AI-driven disruption narrative.
 
 ---
 
@@ -163,6 +153,13 @@ Claimed $15 billion wiped from cybersecurity stocks. This type of hyperbolic fra
 5. **Dual-Use Concern:** Israeli VCs (Shay Michel) and others flagged that the same capability that helps defenders also helps attackers -- if Claude can find vulnerabilities, so can adversaries using frontier models.
 
 6. **Developer Community Split:** Power users (writing 10K+ lines/day with AI) welcomed automated security auditing. Skeptics noted this capability already existed informally ("I already use Claude and Codex to challenge code from one another"). Product critics questioned why this needed to be a separate product rather than a skill or prompt.
+
+---
+
+## Companion Reports
+
+- [Main Claude Code Security Report](2026-02-23-claude-code-security.md) -- Full technical analysis, repository details, product announcement, stock market impact table, and competitive landscape
+- [Reddit Community Reactions](2026-02-23-claude-code-security-reddit.md) -- Reddit thread analysis across 9+ subreddits, WSB overreaction thesis, and developer sentiment
 
 ---
 

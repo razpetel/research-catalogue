@@ -163,6 +163,13 @@ Cole Medin's PIV Loop represents a mature, battle-tested methodology for agentic
 
 ---
 
+## Related Reports
+
+- **[Claude 4 Best Practices](2026-02-02-claude-4-best-practices.md)** - Official Anthropic prompting techniques for Claude 4.x models that underpin effective AI-assisted development
+- **[Claude Code Context Engineering](2026-02-02-context-engineering.md)** - Comprehensive context management guide including the token budget and session isolation strategies referenced in PIV's Memory pillar
+
+---
+
 ## Sources
 
 - [Cole Medin GitHub](https://github.com/coleam00)

@@ -2,6 +2,7 @@
 topic: Claude Code Agent Teams
 slug: claude-code-agent-teams
 date: 2026-02-09
+covers: 2026-02-05 to 2026-02-09
 sources: [github, reddit, twitter, linkedin, web]
 updated_from: 2026-02-06
 ---
@@ -28,6 +29,16 @@ Enterprise signals strengthened rapidly: Goldman Sachs announced an Anthropic pa
 - **Display modes**: `in-process` (default) or `tmux`/iTerm2 split panes
 - **Practical scaling limit**: ~5 agents; performance degrades beyond that
 
+### Comparison with Subagents
+
+| Aspect | Subagents | Agent Teams |
+|--------|-----------|-------------|
+| Context | Own window; results return to caller | Own window; fully independent |
+| Communication | Report back to main agent only | Peer-to-peer messaging |
+| Coordination | Main agent manages all work | Shared task list with self-coordination |
+| Best for | Focused tasks where only result matters | Complex work requiring discussion |
+| Token cost | Lower (summarized back) | Higher (each is separate instance) |
+
 ### What's New Technically (v2.1.33-v2.1.37)
 
 **Fixes shipped:**
@@ -48,6 +59,7 @@ Enterprise signals strengthened rapidly: Goldman Sachs announced an Anthropic pa
 4. **Delegate mode tool loss** — teammates in Delegate Mode lose file access tools (#24073)
 5. **Cross-platform** — Windows spawn failures (#24338), Linux terminal freezes (#23725)
 6. **MCP integration gaps** — MCP servers from plugins don't start in split panes (#23999), permission hooks not triggered in subagents (#23983)
+7. **Feature requests (open)**: WezTerm backend support, multi-repository teams, repository topology awareness for smarter task assignment
 
 ### Performance & Cost Benchmarks (NEW)
 | Metric | Value |
@@ -83,8 +95,10 @@ Enterprise signals strengthened rapidly: Goldman Sachs announced an Anthropic pa
 |----------|-------|-----------------|----------------|
 | GPT-5.3-Codex | N/A | Terminal-Bench 77.3%, sandbox, 25% faster | Higher benchmarks; weaker interactive UX |
 | oh-my-claudecode | 4,041 | 5 execution modes, 32 agents, smart routing | More mature features; community-built |
+| multiclaude | 457 | tmux + git worktrees, "Brownian Ratchet" auto-merge | Similar tmux approach but with CI gating |
 | VibeKanban | 20,400 | Visual GUI, supports multiple AI CLIs | Cross-platform, visual task management |
 | Gas Town | 8,100 | 20-30 agents, Beads tracking, role-based | More ambitious scale; controversial |
+| Auto-Claude | 11,100 | Visual Kanban, Docker isolation, QA loops | More visual; buggier in practice |
 | Kimi K2.5 Swarm | N/A | Moonshot AI, convergent evolution | Different architecture, similar goals |
 | GitHub Agent HQ | N/A | Platform-level, Claude + Codex side by side | PR-centric, 1 premium request/session |
 | claude-flow | N/A | Pivoting to "intelligence layer" on top | 28 proposed enhancements: memory, governance, verification |
@@ -123,7 +137,14 @@ Enterprise signals strengthened rapidly: Goldman Sachs announced an Anthropic pa
 | 5 releases in 3 days shows active investment | Plan availability confusion across subscription tiers |
 | Read-intensive tasks (reviews, research) confirmed sweet spot | MCP servers don't start in split panes |
 
-## Best Practices (Emerging)
+## Best Use Cases (per Anthropic Docs)
+
+1. **Research and review**: Multiple reviewers apply different lenses (security, performance, tests) simultaneously
+2. **New modules/features**: Teammates each own separate pieces without stepping on each other
+3. **Debugging with competing hypotheses**: Test different theories in parallel, debate findings
+4. **Cross-layer coordination**: Frontend, backend, and tests each owned by different teammate
+
+## Best Practices (Emerging, Community-Derived)
 
 1. **Team of 3, not 6**: Coordination overhead makes smaller teams more effective
 2. **Read over write**: Reviews, research, and debugging parallelize better than implementation
@@ -198,6 +219,7 @@ Enterprise signals strengthened rapidly: Goldman Sachs announced an Anthropic pa
 - https://dev.classmethod.jp/articles/claude-code-agent-teams-how-to-build/
 - https://support.claude.com/en/articles/13345190-getting-started-with-cowork
 - https://azure.microsoft.com/en-us/blog/claude-opus-4-6-anthropics-powerful-model-for-coding-agents-and-enterprise-workflows-is-now-available-in-microsoft-foundry-on-azure/
+- https://ecosistemastartup.com/claude-code-agent-teams-automatizacion-multi-agente-2026/
 
 ---
 *Updated by Research Agent on 2026-02-09 (original report: 2026-02-06)*

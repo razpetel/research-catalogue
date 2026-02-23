@@ -348,6 +348,13 @@ based on this new information.
 
 ---
 
+## Related Reports
+
+- **[Claude Code Context Engineering](2026-02-02-context-engineering.md)** - Deep-dive on managing Claude Code's context window, token budgets, and compaction mechanics
+- **[Cole Medin's PIV Loop](2026-02-02-cole-medin-piv-loop.md)** - Structured Plan→Implement→Validate methodology that applies these prompting principles in a repeatable workflow
+
+---
+
 ## Sources
 
 - [Anthropic Platform Docs - Claude 4 Best Practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-4-best-practices)

@@ -364,4 +364,4 @@ The broader signal is clear: **Anthropic is positioning Claude as the security r
 - **CRN**: https://www.crn.com/news/security/2026/5-things-to-know-on-anthropic-s-claude-code-security
 - **CyberScoop**: https://cyberscoop.com/anthropic-claude-code-security-automated-security-review/
 - **The Hacker News**: https://thehackernews.com/2026/02/anthropic-launches-claude-code-security.html
-- **Companion Reports**: [Reddit Reactions](catalogue/2026-02-23-claude-code-security-reddit.md), [Twitter/X Reactions](catalogue/2026-02-23-claude-code-security-twitter.md)
+- **Companion Reports**: [Reddit Reactions](2026-02-23-claude-code-security-reddit.md), [Twitter/X Reactions](2026-02-23-claude-code-security-twitter.md)

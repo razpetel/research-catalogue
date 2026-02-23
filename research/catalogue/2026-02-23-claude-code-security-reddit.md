@@ -117,16 +117,9 @@ The stock market treated these as competitors, but Reddit strongly disagrees:
 
 This was by far the most active topic across Reddit, spanning r/wallstreetbets, r/StockMarket, r/technology, and r/ArtificialInteligence.
 
-### The Numbers
-| Stock | Drop | Category |
-|-------|------|----------|
-| CrowdStrike (CRWD) | ~8% | Endpoint protection |
-| Cloudflare (NET) | ~8.1% | Network security |
-| Okta (OKTA) | ~9.2% | Identity management |
-| SailPoint (SAIL) | ~9.4% | Identity governance |
-| Zscaler (ZS) | ~5.5% | Cloud security |
-| JFrog (FROG) | ~25% | DevOps/supply chain |
-| Global X Cybersecurity ETF (BUG) | ~4.9% | Sector ETF, lowest since Nov 2023 |
+> For the full stock market impact table, see the [main Claude Code Security report](2026-02-23-claude-code-security.md#stock-market-impact).
+
+Notable Reddit-specific observation: both CRWD and NET were **flat or green in the morning**, then dumped precisely at **1 PM ET** when the press release dropped -- a detail widely cited in WSB threads as proof of algorithmic, not fundamental, selling. JFrog's outsized ~25% drop (vs. single-digit declines for most others) was a recurring point of discussion, with commenters noting its DevOps/supply-chain positioning made it the most "story-adjacent" target for panic selling.
 
 ### r/wallstreetbets: "Most misguided dump I've seen"
 The WSB thread was heavily upvoted with a strong **"overreaction / buying opportunity"** consensus:
@@ -238,6 +231,13 @@ The Chinese hacker incident (where Claude was jailbroken to automate cyberattack
 
 **Most Insightful Take:**
 > "Inventing a home smoke detector does not eliminate the need for a fire department." -- Calcalist analysis, widely cited across Reddit
+
+---
+
+## Companion Reports
+
+- [Main Claude Code Security Report](2026-02-23-claude-code-security.md) -- Full technical analysis, repository details, product announcement, stock market impact table, and competitive landscape
+- [Twitter/X Reactions](2026-02-23-claude-code-security-twitter.md) -- Twitter/X social media coverage, Israeli VC community commentary, and financial analyst quotes
 
 ---
 
