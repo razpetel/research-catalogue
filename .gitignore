@@ -5,6 +5,7 @@
 
 # Claude Code
 .claude/
+.omc/
 
 # Workspace files (kept locally, not in repo)
 CLAUDE.md
