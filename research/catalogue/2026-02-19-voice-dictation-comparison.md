@@ -366,6 +366,7 @@ The AI voice dictation market now includes 15+ active products. Below is a conso
 | **Willow Voice** | $15/mo | Zero-config simplicity, context-aware formatting. YC X25. | macOS |
 | **whisperflow.app** | $69-189/mo or $99-299 one-time | Separate commercial product (unrelated to Wispr Flow, despite the name). iOS-focused. | iOS |
 | **Typeless** | Free / paid | Keyboard-level integration on Android | Android |
+| **[DictaFlow](https://dictaflow.io/)** | $9/mo or $84/yr (free tier) | Hold-to-talk dictation with custom vocabulary, optional local offline processing, and Citrix/RDP typing mode | Windows, macOS, iPhone, iPad, Android |
 
 ### Free / Open Source
 
@@ -376,7 +377,6 @@ The AI voice dictation market now includes 15+ active products. Below is a conso
 | **Spokenly** | N/A | Free with local models. Lightweight (2.9MB). | macOS, Windows |
 | **FLUID** | N/A | 6MB app, ~100MB RAM, local-only | macOS |
 | **Vowen** | N/A | Fully local | macOS, Windows |
-| **DictaFlow** | N/A | "VoiceInk for Windows" by different developer. Native AOT (C#), <50MB RAM vs Electron bloat | Windows |
 | **Hyprflow** | 24 | Linux/Hyprland, whisper.cpp, shell script | Linux |
 | **VocaType** | N/A | UI/UX fork of VoiceInk with polished interface | macOS |
 | **FluidVoice** | N/A | Competing FOSS dictation app | macOS |
